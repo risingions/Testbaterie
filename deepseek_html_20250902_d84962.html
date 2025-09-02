@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestBaterie.cz - Odborná diagnostika baterií elektromobilů</title>
+    <style>
+        /* Základní styly */
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #00a859;
+            --dark-color: #333;
+            --light-color: #f4f4f4;
+            --gray-color: #777;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #fff;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        nav ul {
+            display: flex;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Hero sekce */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1560958089-b8a1929cea89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Sekce služeb */
+        .services {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: var(--gray-color);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .service-card h3 {
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+        
+        .service-icon {
+            font-size: 40px;
+            color: var(--secondary-color);
+        }
+        
+        /* O nás sekce */
+        .about {
+            padding: 80px 0;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .about-text h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .about-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Ceník */
+        .pricing {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .pricing-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .pricing-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin: 20px 0;
+        }
+        
+        .pricing-features {
+            margin: 20px 0;
+        }
+        
+        .pricing-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* Reference */
+        .testimonials {
+            padding: 80px 0;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            color: var(--primary-color);
+        }
+        
+        /* Kontakt */
+        .contact {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .contact-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .contact-details {
+            margin-bottom: 30px;
+        }
+        
+        .contact-details li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-icon {
+            margin-right: 15px;
+            color: var(--secondary-color);
+            font-size: 20px;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .contact-form textarea {
+            height: 150px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #ccc;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: background 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        /* Responzivita */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+            }
+            
+            .about-content,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Test<span>Baterie</span>.cz</div>
+            <nav>
+                <ul>
+                    <li><a href="#sluzby">Služby</a></li>
+                    <li><a href="#o-nas">O nás</a></li>
+                    <li><a href="#cenik">Ceník</a></li>
+                    <li><a href="#reference">Reference</a></li>
+                    <li><a href="#kontakt">Kontakt</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero sekce -->
+    <section class="hero">
+        <div class="container">
+            <h1>Odborná diagnostika baterií elektromobilů</h1>
+            <p>Přesné měření stavu zdraví (SoH) a kapacity (SoC) baterií elektrických vozidel. Zjistěte skutečný stav vaší baterie s naší specializovanou diagnostikou.</p>
+            <a href="#kontakt" class="btn">Objednat diagnostiku</a>
+        </div>
+    </section>
+
+    <!-- Služby -->
+    <section id="sluzby" class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Naše služby</h2>
+                <p>Komplexní diagnostika baterií elektromobilů pomocí specializovaných přístrojů a softwaru</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🔋</div>
+                    <h3>Diagnostika stavu baterie (SoH)</h3>
+                    <p>Přesné změření kapacity baterie a jejího opotřebení v porovnání s původními parametry.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Měření stavu nabití (SoC)</h3>
+                    <p>Kalibrace a ověření správnosti údajů o stavu nabití baterie na palubním počítači.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔍</div>
+                    <h3>Analýza článků baterie</h3>
+                    <p>Detekce problémových článků v baterii, které ovlivňují výkon a dojezd vozidla.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📝</div>
+                    <h3>Podrobná zpráva o stavu</h3>
+                    <p>Výstupní report s podrobnými informacemi a doporučeními pro další údržbu baterie.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- O nás -->
+    <section id="o-nas" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Proč zvolit naše služby</h2>
+                    <p>Jsme specialisté na diagnostiku baterií elektromobilů s letitými zkušenostmi v oboru. Naše moderní diagnostické přístroje umožňují přesné změření parametrů baterie bez nutnosti jejího vyjímání z vozidla.</p>
+                    <p>Spolupracujeme s předními výrobci elektromobilů a neustále investujeme do nejmodernějších technologií, abychom vám poskytli co nejpřesnější informace o stavu vaší baterie.</p>
+                    <p>Naše diagnostické služby pomáhají majitelům elektromobilů při koupi ojetého vozu, pravidelné údržbě nebo řešení problémů s dojezdem.</p>
+                    <a href="#kontakt" class="btn">Kontaktujte nás</a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1593941707882-a5bac6861d75?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Diagnostika baterie elektromobilu">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ceník -->
+    <section id="cenik" class="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Ceník služeb</h2>
+                <p>Transparentní ceny našich diagnostických služeb</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Základní diagnostika</h3>
+                    <div class="price">1 490 Kč</div>
+                    <ul class="pricing-features">
+                        <li>Měření stavu zdraví baterie (SoH)</li>
+                        <li>Kontrola stavu nabití (SoC)</li>
+                        <li>Základní report o stavu baterie</li>
+                        <li>Doba měření: cca 30 minut</li>
+                    </ul>
+                    <a href="#kontakt" class="btn">Objednat</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Kompletní diagnostika</h3>
+                    <div class="price">2 990 Kč</div>
+                    <ul class="pricing-features">
+                        <li>Kompletní analýza stavu baterie</li>
+                        <li>Test jednotlivých článků</li>
+                        <li>Historie nabíjení a vybíjení</li>
+                        <li>Podrobný report s doporučeními</li>
+                        <li>Doba měření: cca 60-90 minut</li>
+                    </ul>
+                    <a href="#kontakt" class="btn">Objednat</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Předkupní diagnostika</h3>
+                    <div class="price">3 990 Kč</div>
+                    <ul class="pricing-features">
+                        <li>Kompletní diagnostika baterie</li>
+                        <li>Test výkonu za různých podmínek</li>
+                        <li>Odhad životnosti baterie</li>
+                        <li>Podrobný report vhodný pro rozhodování o koupi</li>
+                        <li>Konzultace s technikem</li>
+                        <li>Doba měření: 2-3 hodiny</li>
+                    </ul>
+                    <a href="#kontakt" class="btn">Objednat</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reference -->
+    <section id="reference" class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Reference zákazníků</h2>
+                <p>Co o našich službách říkají naši klienti</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Profesionální přístup, podrobný report a vysvětlení všech parametrů. Díky diagnostice jsem se vyhnul koupi ojetého elektromobilu s degradovanou baterií."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Petr Novák">
+                        </div>
+                        <div class="author-info">
+                            <h4>Petr Novák</h4>
+                            <p>Majitel Nissan Leaf</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Skvělá služba! Baterie v mém Tesle měla najednou menší dojezd. Po diagnostice a kalibraci je vše zpět v normálu. Doporučuji všem majitelům elektromobilů."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jana Kovářová">
+                        </div>
+                        <div class="author-info">
+                            <h4>Jana Kovářová</h4>
+                            <p>Majitelka Tesla Model 3</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Přesvědčivý a fundovaný přístup. Technik mi vše detailně vysvětlil a poradil s údržbou baterie. Report byl velmi podrobný a srozumitelný i pro laika."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Martin Svoboda">
+                        </div>
+                        <div class="author-info">
+                            <h4>Martin Svoboda</h4>
+                            <p>Majitel Hyundai Kona Electric</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="kontakt" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Kontaktujte nás</h2>
+                <p>Objednejte si diagnostiku nebo získejte více informací</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Kontaktní údaje</h3>
+                    <ul class="contact-details">
+                        <li>
+                            <span class="contact-icon">📍</span>
+                            <span>TestBaterie.cz s.r.o.<br>Elektrická 123<br>Praha 10</span>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <span>+420 777 123 456</span>
+                        </li>
+                        <li>
+                            <span class="contact-icon">✉️</span>
+                            <span>info@testbaterie.cz</span>
+                        </li>
+                        <li>
+                            <span class="contact-icon">🕒</span>
+                            <span>Po-Pá: 8:00-17:00<br>So: 9:00-13:00 (dle objednávek)</span>
+                        </li>
+                    </ul>
+                    <div class="map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2559.834284487321!2d14.467311176846915!3d50.07857187152333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b939a57e6c71d%3A0xaf9c97c2b5d5f5f5!2sPrague!5e0!3m2!1sen!2scz!4v1645123456789!5m2!1sen!2scz" width="100%" height="250" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form>
+                        <input type="text" placeholder="Jméno a příjmení" required>
+                        <input type="email" placeholder="E-mail" required>
+                        <input type="tel" placeholder="Telefon">
+                        <select>
+                            <option value="" disabled selected>Vyberte službu</option>
+                            <option value="zakladni">Základní diagnostika</option>
+                            <option value="kompletni">Kompletní diagnostika</option>
+                            <option value="predkupni">Předkupní diagnostika</option>
+                        </select>
+                        <textarea placeholder="Vaše zpráva" required></textarea>
+                        <button type="submit" class="btn">Odeslat poptávku</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>TestBaterie.cz</h3>
+                    <p>Specializujeme se na diagnostiku stavu baterií elektromobilů. Naše služby pomáhají majitelům elektrických vozidel udržovat jejich baterie v perfektním stavu.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Rychlé odkazy</h3>
+                    <ul>
+                        <li><a href="#sluzby">Služby</a></li>
+                        <li><a href="#o-nas">O nás</a></li>
+                        <li><a href="#cenik">Ceník</a></li>
+                        <li><a href="#reference">Reference</a></li>
+                        <li><a href="#kontakt">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Služby</h3>
+                    <ul>
+                        <li><a href="#">Diagnostika SoH</a></li>
+                        <li><a href="#">Měření SoC</a></li>
+                        <li><a href="#">Analýza článků</a></li>
+                        <li><a href="#">Předkupní diagnostika</a></li>
+                        <li><a href="#">Kalibrace baterie</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Sledujte nás</h3>
+                    <div class="social-links">
+                        <a href="#">FB</a>
+                        <a href="#">IG</a>
+                        <a href="#">YT</a>
+                        <a href="#">LI</a>
+                    </div>
+                    <p style="margin-top: 20px;">Odebírejte náš newsletter:</p>
+                    <form>
+                        <input type="email" placeholder="Váš e-mail" style="padding: 8px; width: 70%; margin-right: 5px; border-radius: 3px; border: none;">
+                        <button type="submit" style="padding: 8px 12px; background: var(--secondary-color); color: white; border: none; border-radius: 3px; cursor: pointer;">Odeslat</button>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 TestBaterie.cz. Všechna práva vyhrazena.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
